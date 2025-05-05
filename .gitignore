@@ -1,0 +1,46 @@
+# 依赖目录
+node_modules/
+
+# 编译输出
+dist/
+build/
+
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 运行时数据
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 编辑器目录和文件
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# 系统文件
+Thumbs.db
+.DS_Store
+ehthumbs.db
+Desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+.cache/
+
+# 自动生成的文件
+package-lock.json
+yarn.lock
+
+# 测试覆盖率
+coverage/ 

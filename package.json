@@ -1,0 +1,21 @@
+{
+  "name": "easy-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "convert": "node convert.js"
+  },
+  "keywords": [
+    "blog",
+    "easy-blog",
+    "router",
+    "markdown",
+    "html"
+  ],
+  "author": "yumeng",
+  "license": "MIT",
+  "description": "A simple blog system",
+  "dependencies": {
+    "marked": "^4.0.0"
+  }
+}
