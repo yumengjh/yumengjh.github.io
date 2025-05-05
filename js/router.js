@@ -3,6 +3,7 @@ class Router {
         this.routes = options.routes || [];
         this.currentHash = '';
         this.init();
+        this.initProgressBar();
     }
 
     init() {
@@ -41,7 +42,44 @@ class Router {
         }
     }
 
+    initProgressBar() {
+        if (!document.getElementById('router-progress')) {
+            const bar = document.createElement('div');
+            bar.id = 'router-progress';
+            bar.style.cssText = `
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #4a90e2 0%, #42b983 100%);
+                width: 0;
+                z-index: 9999;
+                transition: width 0.3s;
+            `;
+            document.body.appendChild(bar);
+        }
+    }
+
+    showProgressBar() {
+        const bar = document.getElementById('router-progress');
+        if (bar) {
+            bar.style.width = '80%';
+            bar.style.opacity = '1';
+        }
+    }
+
+    hideProgressBar() {
+        const bar = document.getElementById('router-progress');
+        if (bar) {
+            bar.style.width = '100%';
+            setTimeout(() => {
+                bar.style.opacity = '0';
+                bar.style.width = '0';
+            }, 300);
+        }
+    }
+
     async loadHTML(url) {
+        this.showProgressBar();
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -53,6 +91,8 @@ class Router {
         } catch (error) {
             console.error('加载页面失败:', error);
             return '404 Page not found <br> <a href="/">Back to home</a>';
+        } finally {
+            this.hideProgressBar();
         }
     }
 
@@ -92,6 +132,11 @@ const router = new Router({
         {
             path: '/about',
             component: './view/about.html'
+        },
+        // 文章配置
+        {
+            path: '/post/01',
+            component: './post/js-small-note.html'
         }
     ]
 });
