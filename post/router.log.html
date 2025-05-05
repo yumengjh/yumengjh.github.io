@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>router.log</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --text-color: #212529;
+        }
+        .post-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+        }
+        .post-content code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .post-content pre code {
+            display: block;
+            padding: 1em;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-content">
+        <h1 id="手搓前端路由实现文档">手搓前端路由实现文档</h1>
+<h2 id="一、实现功能">一、实现功能</h2>
+<h3 id="1-核心功能">1. 核心功能</h3>
+<ul>
+<li>基于hash的路由系统</li>
+<li>声明式导航（RouterLink组件）</li>
+<li>编程式导航（push方法）</li>
+<li>路由视图（RouterView组件）</li>
+<li>页面加载进度条</li>
+<li>404页面处理</li>
+</ul>
+<h3 id="2-技术特点">2. 技术特点</h3>
+<ul>
+<li>纯原生JavaScript实现</li>
+<li>基于Web Components</li>
+<li>支持异步加载</li>
+<li>零依赖</li>
+</ul>
+<h2 id="二、核心api使用">二、核心API使用</h2>
+<h3 id="1-web-components-api">1. Web Components API</h3>
+<pre><code class="language-javascript">customElements.define(&#39;router-link&#39;, class extends HTMLElement {
+    constructor() {
+        super();
+        // 组件实现
+    }
+});	
+</code></pre>
+<ul>
+<li>用于创建自定义HTML元素</li>
+<li>实现RouterLink和RouterView组件</li>
+</ul>
+<h3 id="2-history-api">2. History API</h3>
+<pre><code class="language-javascript">window.location.hash
+window.addEventListener(&#39;hashchange&#39;, callback)
+</code></pre>
+<ul>
+<li>监听URL hash变化</li>
+<li>获取当前路由路径</li>
+</ul>
+<h3 id="3-fetch-api">3. Fetch API</h3>
+<pre><code class="language-javascript">const response = await fetch(url);
+const html = await response.text();
+</code></pre>
+<ul>
+<li>异步加载HTML页面</li>
+<li>处理网络请求</li>
+</ul>
+<h3 id="4-domparser">4. DOMParser</h3>
+<pre><code class="language-javascript">const parser = new DOMParser();
+const doc = parser.parseFromString(html, &#39;text/html&#39;);
+</code></pre>
+<ul>
+<li>解析HTML字符串</li>
+<li>提取页面内容</li>
+</ul>
+<h2 id="三、实现原理">三、实现原理</h2>
+<h3 id="1-路由类设计">1. 路由类设计</h3>
+<pre><code class="language-javascript">class Router {
+    constructor(options) {
+        this.routes = options.routes || [];
+        this.currentHash = &#39;&#39;;
+        this.init();
+    }
+    // ...其他方法
+}
+</code></pre>
+<h3 id="2-路由配置格式">2. 路由配置格式</h3>
+<pre><code class="language-javascript">const routes = [
+    {
+        path: &#39;/&#39;,
+        component: &#39;./view/home.html&#39;
+    }
+    // ...其他路由
+];
+</code></pre>
+<h3 id="3-核心方法">3. 核心方法</h3>
+<ul>
+<li><code>init()</code>: 初始化路由系统</li>
+<li><code>refresh()</code>: 更新路由视图</li>
+<li><code>loadHTML()</code>: 加载页面内容</li>
+<li><code>push()</code>: 编程式导航</li>
+</ul>
+<h2 id="四、运行流程">四、运行流程</h2>
+<ol>
+<li><p><strong>初始化阶段</strong></p>
+<ul>
+<li>创建Router实例</li>
+<li>注册自定义元素</li>
+<li>初始化进度条</li>
+<li>绑定hashchange事件</li>
+</ul>
+</li>
+<li><p><strong>路由变化时</strong></p>
+<ul>
+<li>触发hashchange事件</li>
+<li>解析当前hash值</li>
+<li>匹配路由配置</li>
+<li>加载对应组件</li>
+<li>更新RouterView内容</li>
+</ul>
+</li>
+<li><p><strong>页面加载过程</strong></p>
+<ul>
+<li>显示进度条</li>
+<li>请求HTML文件</li>
+<li>解析HTML内容</li>
+<li>更新DOM</li>
+<li>隐藏进度条</li>
+</ul>
+</li>
+</ol>
+<h2 id="五、代码结构">五、代码结构</h2>
+<pre><code>project/
+├── js/
+│   ├── router.js      # 路由核心实现
+│   └── app.js         # 应用入口
+├── view/              # 页面文件
+│   ├── home.html
+│   ├── about.html
+│   └── ...
+└── index.html         # 主页面
+</code></pre>
+<h2 id="六、使用方法">六、使用方法</h2>
+<h3 id="1-声明式导航">1. 声明式导航</h3>
+<pre><code class="language-html">&lt;router-link to=&quot;/&quot;&gt;首页&lt;/router-link&gt;
+&lt;router-link to=&quot;/about&quot;&gt;关于&lt;/router-link&gt;
+</code></pre>
+<h3 id="2-编程式导航">2. 编程式导航</h3>
+<pre><code class="language-javascript">router.push(&#39;/about&#39;);
+</code></pre>
+<h3 id="3-路由视图">3. 路由视图</h3>
+<pre><code class="language-html">&lt;router-view&gt;&lt;/router-view&gt;
+</code></pre>
+<h2 id="七、可扩展功能">七、可扩展功能</h2>
+<ol>
+<li><p><strong>路由守卫</strong></p>
+<ul>
+<li>全局前置守卫</li>
+<li>全局后置守卫</li>
+<li>路由独享守卫</li>
+</ul>
+</li>
+<li><p><strong>路由元信息</strong></p>
+<ul>
+<li>页面标题</li>
+<li>权限控制</li>
+<li>页面过渡效果</li>
+</ul>
+</li>
+<li><p><strong>嵌套路由</strong></p>
+<ul>
+<li>支持多级路由</li>
+<li>子路由配置</li>
+<li>路由组件复用</li>
+</ul>
+</li>
+<li><p><strong>动态路由</strong></p>
+<ul>
+<li>参数传递</li>
+<li>查询字符串解析</li>
+<li>动态路由匹配</li>
+</ul>
+</li>
+<li><p><strong>路由模式</strong></p>
+<ul>
+<li>History模式</li>
+<li>Hash模式切换</li>
+<li>自定义模式</li>
+</ul>
+</li>
+<li><p><strong>过渡动画</strong></p>
+<ul>
+<li>页面切换动画</li>
+<li>自定义过渡效果</li>
+<li>动画钩子函数</li>
+</ul>
+</li>
+<li><p><strong>错误处理</strong></p>
+<ul>
+<li>更完善的404处理</li>
+<li>路由错误捕获</li>
+<li>加载失败处理</li>
+</ul>
+</li>
+<li><p><strong>性能优化</strong></p>
+<ul>
+<li>路由懒加载</li>
+<li>预加载机制</li>
+<li>缓存管理</li>
+</ul>
+</li>
+</ol>
+<h2 id="八、注意事项">八、注意事项</h2>
+<ol>
+<li><p><strong>兼容性</strong></p>
+<ul>
+<li>需要现代浏览器支持</li>
+<li>依赖Web Components</li>
+<li>使用ES6+特性</li>
+</ul>
+</li>
+<li><p><strong>限制</strong></p>
+<ul>
+<li>仅支持hash模式</li>
+<li>不支持动态路由</li>
+<li>页面需要服务器环境</li>
+</ul>
+</li>
+<li><p><strong>最佳实践</strong></p>
+<ul>
+<li>合理的路由配置</li>
+<li>适当的错误处理</li>
+<li>良好的代码组织</li>
+</ul>
+</li>
+</ol>
+<h2 id="九、未来优化方向">九、未来优化方向</h2>
+<ol>
+<li>实现真实的进度条加载</li>
+<li>添加路由转场动画</li>
+<li>支持路由懒加载</li>
+<li>实现路由守卫机制</li>
+<li>添加路由元信息</li>
+<li>支持History模式</li>
+<li>优化错误处理机制</li>
+<li>添加TypeScript支持</li>
+</ol>
+
+    </div>
+</body>
+</html>

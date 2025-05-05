@@ -164,6 +164,41 @@ class Router {
         return path;
     }
 
+    // 解析路由参数
+    parseParams(routePath, currentPath) {
+        const routeParts = routePath.split('/');    // 路由路径
+        const currentParts = currentPath.split('/'); // 当前路径
+        // console.log('解析路由参数----routeParts:', routeParts, 'currentParts:', currentParts);
+        const params = {};
+
+        if (routeParts.length !== currentParts.length) {
+            return null;
+        }
+
+        for (let i = 0; i < routeParts.length; i++) {
+            if (routeParts[i].startsWith(':')) {
+                // 提取参数名，例如 :id -> id
+                const paramName = routeParts[i].slice(1);
+                params[paramName] = currentParts[i];
+            } else if (routeParts[i] !== currentParts[i]) {     
+                return null;
+            }
+        }
+
+        return params;
+    }
+
+    // 检查路由是否匹配
+    matchRoute(routePath, currentPath) {
+        // console.log('检查路由是否匹配----路由路径:', routePath, '当前路径:', currentPath);
+        const params = this.parseParams(routePath, currentPath);
+        if (params !== null) {
+            this.params = params;  // 存储解析出的参数
+            return true;
+        }
+        return routePath === currentPath;
+    }
+
     async refresh() {
         this.currentPath = this.getPath();
         const routerView = document.querySelector('router-view');
@@ -174,12 +209,19 @@ class Router {
         }
 
         // 存储router实例到routerView元素
-        routerView._router = this;  // 把Router实例存储到routerView元素上
-        const matchedRoute = this.routes.find(route => route.path === this.currentPath);
+        routerView._router = this;
 
+        // 查找匹配的路由
+        const matchedRoute = this.routes.find(route => this.matchRoute(route.path, this.currentPath));
+        // console.log('matchedRoute:', matchedRoute);
         if (matchedRoute) {
             try {
-                const content = await this.loadHTML(matchedRoute.component);
+                // 如果component是函数，则调用它并传入路由参数
+                const componentPath = typeof matchedRoute.component === 'function' 
+                    ? matchedRoute.component(this.params) 
+                    : matchedRoute.component;
+                
+                const content = await this.loadHTML(componentPath);
                 routerView.innerHTML = content;
             } catch (error) {
                 routerView.innerHTML = 'Error loading page content';
@@ -190,7 +232,7 @@ class Router {
     }
 
     async push(path) {
-        console.log('[Push]导航到：', path);
+        // console.log('[Push]导航到：', path);
         if (this.mode === RouterMode.HASH) {
             window.location.hash = path;
         } else {
@@ -214,11 +256,16 @@ class Router {
     go(n) {
         window.history.go(n);
     }
+
+    // 获取当前路由参数
+    getParams() {
+        return this.params;
+    }
 }
 
 // 创建路由实例
 const router = new Router({
-    mode: RouterMode.HISTORY,  // 使用枚举值
+    mode: RouterMode.HASH,
     base: '/',
     routes: [
         {
@@ -237,10 +284,13 @@ const router = new Router({
             path: '/about',
             component: './view/about.html'
         },
-        // 文章配置
+        // 动态路由配置
         {
-            path: '/post/01',
-            component: './post/js-small-note.html'
+            path: '/post/:id',
+            component: (params) => {
+                // console.log('动态路由参数:', params);
+                return `./post/${params.id}.html`;
+            }
         }
     ]
 });
