@@ -23,10 +23,10 @@ class Router {
         // 根据模式绑定不同的事件
         if (this.mode === RouterMode.HASH) {
             window.addEventListener('hashchange', () => this.refresh());
-            window.addEventListener('load', () => this.refresh());
+            // window.addEventListener('load', () => this.refresh());
         } else {
             window.addEventListener('popstate', () => this.refresh());
-            window.addEventListener('load', () => this.refresh());
+            // window.addEventListener('load', () => this.refresh());
         }
 
         // 初始化自定义元素
