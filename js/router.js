@@ -246,9 +246,9 @@ class Router {
 
                 // 更新页面标题，处理动态路由
                 if (typeof matchedRoute.title === 'function') {
-                    document.title = matchedRoute.title(this.params);
+                    document.title = 'Yumeng | ' + matchedRoute.title(this.params);
                 } else {
-                    document.title = matchedRoute.title || 'Default Title';
+                    document.title = 'Yumeng | ' + (matchedRoute.title || 'Default Title');
                 }
             } catch (err) {
                 console.error('[Router] 页面加载失败:', err);
@@ -309,7 +309,7 @@ const router = new Router({
     mode: RouterMode.HASH,
     base: '/',
     routes: [
-        { path: '/', component: './view/home.html', title: 'Home' },
+        { path: '/', component: './view/home.html', title: 'Blog' },
         { path: '/tag', component: './view/tag.html', title: 'Tag' },
         { path: '/post', component: './view/post.html', title: 'Post' },
         { path: '/about', component: './view/about.html', title: 'About' },
