@@ -19,7 +19,7 @@ class Router {
         this._refreshHandler = this.refresh.bind(this);
 
         this.init();
-        this.initProgressBar();
+        // this.initProgressBar();
     }
 
     init() {
