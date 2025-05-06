@@ -5,21 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yumeng's blog</title>
     <style>
-    .s1{
-        display: none;
-    }
-    .s2{
-        display: none;
-    }
     </style>
 </head>
 <body>
-    <div class="intro s1">
+    <div class="intro">
         <h1>Hello, I'm Yumeng</h1>
         <h2>I'm a Student from China. My hobby is to learn new things.</h2>
     </div>
 
-    <div class="location s2">
+    <div class="location">
         <p>Currently living in <a href="https://s21.ax1x.com/2025/04/26/pETA0gK.webp">Zhuhai</a> — possibly the most
             comfortable city in the world.</p>
         <p> I write some articles about my learning and life.</p>
@@ -47,18 +41,5 @@
             <li><a href="#/posts/analytics">How Bear uses CSS to analyze</a></li>
         </ul> -->
     </div>
-
-    <script type="module">
-        import slideUp from '../utils/slideUp.js';
-
-        // 初始化滑动动画
-        slideUp.init();
-        slideUp.add(document.querySelector('.s1'),{
-            delay: 100
-        });
-        slideUp.add(document.querySelector('.s2'),{
-            delay: 200
-        });
-    </script>
 </body>
 </html>
