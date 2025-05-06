@@ -243,6 +243,13 @@ class Router {
                 routerView.replaceChildren(
                     document.createRange().createContextualFragment(content)
                 );
+
+                // 更新页面标题，处理动态路由
+                if (typeof matchedRoute.title === 'function') {
+                    document.title = matchedRoute.title(this.params);
+                } else {
+                    document.title = matchedRoute.title || 'Default Title';
+                }
             } catch (err) {
                 console.error('[Router] 页面加载失败:', err);
                 routerView.innerHTML = 'Error loading page content';
@@ -251,6 +258,7 @@ class Router {
             routerView.replaceChildren(
                 document.createRange().createContextualFragment(await this.loadHTML('./view/404.html'))
             );
+            document.title = '404 Not Found';
         }
     }
 
@@ -301,15 +309,18 @@ const router = new Router({
     mode: RouterMode.HASH,
     base: '/',
     routes: [
-        { path: '/', component: './view/home.html' },
-        { path: '/tag', component: './view/tag.html' },
-        { path: '/post', component: './view/post.html' },
-        { path: '/about', component: './view/about.html' },
+        { path: '/', component: './view/home.html', title: 'Home' },
+        { path: '/tag', component: './view/tag.html', title: 'Tag' },
+        { path: '/post', component: './view/post.html', title: 'Post' },
+        { path: '/about', component: './view/about.html', title: 'About' },
         {
             path: '/post/:id',
             component: (params) => {
                 log('动态路由参数:', params);
                 return `./post/${params.id}.html`;
+            },
+            title: (params) => {
+                return `Post ${params.id}`;
             }
         }
     ]
