@@ -309,10 +309,11 @@ const router = new Router({
     mode: RouterMode.HASH,
     base: '/',
     routes: [
-        { path: '/', component: './view/home.html', title: 'Blog' },
-        { path: '/tag', component: './view/tag.html', title: 'Tag' },
-        { path: '/post', component: './view/post.html', title: 'Post' },
-        { path: '/about', component: './view/about.html', title: 'About' },
+        { path: '/', component: './view/home.html', title: 'Home' },
+        { path: '/link', component: './view/link.html', title: 'Link' },
+        // { path: '/tag', component: './view/tag.html', title: 'Tag' },
+        // { path: '/post', component: './view/post.html', title: 'Post' },
+        // { path: '/about', component: './view/about.html', title: 'About' },
         {
             path: '/post/:id',
             component: (params) => {
