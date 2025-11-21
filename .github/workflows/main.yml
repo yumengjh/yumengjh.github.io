@@ -1,59 +1,52 @@
-name: 部署 Svelte 项目到 GitHub Pages
+name: 部署 Svelte + Vite 项目到 GitHub Pages
 
-# 触发条件：推送到 main 分支（或 master 分支，根据你的默认分支修改）
+# 触发条件：推送到 main 分支（或 master，根据你的默认分支修改）
 on:
   push:
     branches: [ main ]  # 若默认分支是 master，改为 branches: [ master ]
-  # 可选：允许手动触发部署
-  workflow_dispatch:
+  workflow_dispatch:  # 允许手动触发部署
 
-# 权限配置：允许写入 GitHub Pages 分支（gh-pages）
+# 权限配置：必须开启，否则无法写入 gh-pages 分支
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 工作流任务
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # 使用 Ubuntu 环境（稳定且常用）
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}  # 部署后输出访问链接
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # 步骤 1：拉取 GitHub 仓库代码
+      # 1. 拉取仓库代码
       - name: 检出代码
         uses: actions/checkout@v4
 
-      # 步骤 2：设置 Node.js 环境（Svelte 项目依赖 Node.js）
-      - name: 配置 Node.js
+      # 2. 配置 Node.js 环境（匹配项目依赖的 Node 版本，推荐 18+）
+      - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20  # 推荐使用 Node.js 18+（SvelteKit/Vite 兼容版本）
+          node-version: 20  # 与你本地开发环境一致即可
           cache: 'npm'      # 缓存 npm 依赖，加速构建
 
-      # 步骤 3：安装依赖并构建项目
-      - name: 安装依赖 & 构建
+      # 3. 安装依赖 + 构建项目（使用 Vite 构建，输出到 dist 目录）
+      - name: 安装依赖并构建
         run: |
-          npm install  
-          npm run build  
+          npm install  # 安装所有依赖（包括 overrides 中的 rolldown-vite）
+          npm run build  # 执行 Vite 构建，输出到 dist 目录
 
-      # 步骤 4：处理 Svelte 路由兼容（关键！解决 GitHub Pages 刷新 404 问题）
-      # 原理：复制 index.html 为 404.html，让所有路由 fallback 到主页（SPA 路由兼容）
-      - name: 配置 SPA 路由兼容
+      # 4. 关键：处理 svelte-navigator 路由兼容（解决刷新 404）
+      # 原理：GitHub Pages 不支持 SPA 路由，将所有路由 fallback 到 index.html
+      - name: 配置 SPA 路由 fallback
         run: |
-          cd dist  
-          cp index.html 404.html  
+          cd dist  # 进入 Vite 构建输出目录（你的项目是 dist，不是 build）
+          cp index.html 404.html  # 复制 index.html 为 404.html，实现路由 fallback
 
-      # 步骤 5：部署到 GitHub Pages
-      - name: 部署
+      # 5. 部署到 GitHub Pages（指定 dist 目录为部署源）
+      - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          # 部署目录：指定构建后的静态文件目录（关键！需与项目输出目录匹配）
-          #  需根据你的项目类型修改：
-          # - 传统 Svelte + Vite：build（默认）
-          # - SvelteKit（adapter-static）：.svelte-kit/output/static
-          # - 其他工具：请查看 package.json 中 build 脚本的输出路径
-          folder: build  # 👈 这里是默认值，需根据实际情况调整！
+          folder: dist  # 核心配置：部署 dist 目录下的静态文件
