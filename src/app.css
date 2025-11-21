@@ -4,11 +4,32 @@
     "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   --bg-page: #f8f5f1;
   --bg-card: #ffffff;
+  --bg-card-tint: rgba(255, 255, 255, 0.92);
+  --nav-bg: rgba(248, 245, 241, 0.7);
   --text-main: #2f2c3a;
   --text-muted: #6b6881;
   --accent: #6b5bd6;
-  --accent-soft: rgba(107, 91, 214, 0.08);
-  --border-soft: rgba(47, 44, 58, 0.08);
+  --accent-soft: rgba(107, 91, 214, 0.12);
+  --border-soft: rgba(47, 44, 58, 0.12);
+  --shadow-card: 0 25px 60px rgba(41, 35, 61, 0.08);
+  --shadow-card-hover: 0 35px 70px rgba(41, 35, 61, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg-page: #0f1117;
+    --bg-card: #161823;
+    --bg-card-tint: rgba(22, 24, 35, 0.85);
+    --nav-bg: rgba(15, 17, 23);
+    --text-main: #f5f6fb;
+    --text-muted: #b0b4c7;
+    --accent: #a796ff;
+    --accent-soft: rgba(167, 150, 255, 0.2);
+    --border-soft: rgba(255, 255, 255, 0.14);
+    --shadow-card: 0 25px 60px rgba(0, 0, 0, 0.65);
+    --shadow-card-hover: 0 35px 70px rgba(0, 0, 0, 0.75);
+  }
 }
 
 * {
@@ -16,7 +37,7 @@
 }
 
 html {
-  background: #f8f5f1;
+  background: var(--bg-page);
 }
 
 body {
@@ -42,12 +63,43 @@ nav.site-nav {
   align-items: center;
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--border-soft);
-  background: rgba(248, 245, 241, 0.7);
+  background: var(--nav-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
   z-index: 10;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.theme-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.theme-actions button {
+  border: 1px solid var(--border-soft);
+  background: var(--bg-card);
+  color: var(--text-main);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-actions button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-actions .theme-toggle[aria-pressed="true"] {
+  border-color: var(--accent);
 }
 
 .nav-links {
@@ -147,15 +199,15 @@ main {
   min-height: 230px;
   padding: 2rem;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bg-card-tint);
   border: 1px solid var(--border-soft);
-  box-shadow: 0 25px 60px rgba(41, 35, 61, 0.08);
+  box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 35px 70px rgba(41, 35, 61, 0.15);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .card h2,
