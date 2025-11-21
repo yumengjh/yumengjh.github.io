@@ -1,5 +1,5 @@
 <svelte:head>
-  <title>Me</title>
+  <title>Yumengjh</title>
 </svelte:head>
 
 <section class="hero-card">
