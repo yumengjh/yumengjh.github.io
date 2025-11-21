@@ -54,10 +54,13 @@
       </Route>
 
       <Route path="*">
-        <div class="section-card">
-          <h2>页面未找到</h2>
-          <p class="muted">链接可能已过期，请使用上方导航返回主页。</p>
-        </div>
+        <section class="hero-card hero-minimal">
+          <p class="tagline">404 Not Found</p>
+          <h1>404 Not Found</h1>
+          <p class="lead">
+             The page you are looking for does not exist.
+          </p>
+        </section>
       </Route>
     </RouteTransitions>
   </main>

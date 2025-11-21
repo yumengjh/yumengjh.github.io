@@ -157,7 +157,7 @@ main {
 .hero-card .lead {
   font-size: 1.05rem;
   color: var(--text-muted);
-  max-width: 560px;
+  /* max-width: 560px; */
 }
 
 .hero-links {
