@@ -1,34 +1,57 @@
-<div class="z z-1">Z</div>
-<div class="z z-2">Z</div>
-<div class="z z-3">Z</div>
-<div class="z z-4">Z</div>
+<div class="loading-container">
+  <div class="loading-dots">
+    <div class="dot dot-1"></div>
+    <div class="dot dot-2"></div>
+    <div class="dot dot-3"></div>
+  </div>
+</div>
 
 <style>
-  .z {
-    position: absolute;
-    font-size: 32px;
-    opacity: 0;
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    width: 100%;
   }
-  .z-1 {
-    animation: swayUpToRight 2s ease-out infinite;
+
+  .loading-dots {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
   }
-  .z-2 {
-    animation: swayUpToRight 2s ease-out 0.5s infinite;
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.4;
+    animation: pulse 1.4s ease-in-out infinite;
   }
-  .z-3 {
-    animation: swayUpToRight 2s ease-out 1s infinite;
+
+  .dot-1 {
+    animation-delay: 0s;
   }
-  .z-4 {
-    animation: swayUpToRight 2s ease-out 1.5s infinite;
+
+  .dot-2 {
+    animation-delay: 0.2s;
   }
-  @keyframes swayUpToRight {
-    0% {
-      transform: translate(0, 0) rotate(0deg);
-      opacity: 1;
-    }
+
+  .dot-3 {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes pulse {
+    0%,
     100% {
-      transform: translate(80px, -100px) rotate(30deg);
-      opacity: 0;
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
     }
   }
 </style>
