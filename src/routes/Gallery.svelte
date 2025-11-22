@@ -1,4 +1,6 @@
 <script>
+  import { messages } from '../i18n/store';
+
   /** @type {{title: string; location: string; url: string} | null} */
   let activeImage = null;
 
@@ -27,21 +29,19 @@
 </script>
 
 <svelte:head>
-  <title>My Gallery</title>
+  <title>{$messages?.gallery?.title || 'My Gallery'}</title>
 </svelte:head>
 
 <section class="hero-card hero-minimal">
-  <p class="tagline">My Gallery</p>
-  <h1>Snapshots & Moments</h1>
+  <p class="tagline">{$messages?.gallery?.tagline || 'My Gallery'}</p>
+  <h1>{$messages?.gallery?.title || 'Snapshots & Moments'}</h1>
   <p class="lead">
-    🌍 🌆 🌇 🌃 🌄
+    {$messages?.gallery?.description || '🌍 🌆 🌇 🌃 🌄'}
   </p>
 </section>
-
 
 <style>
   .hero-minimal {
     padding: 1.5rem 0 0;
   }
 </style>
-
