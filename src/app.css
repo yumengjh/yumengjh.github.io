@@ -2,35 +2,38 @@
   color-scheme: light;
   font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
     "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-  --bg-page: #f8f5f1;
-  --bg-card: #ffffff;
+
+  --bg-page: #f0f4fa;          /* 页面背景，淡蓝 */
+  --bg-card: #ffffff;           /* 卡片背景 */
   --bg-card-tint: rgba(255, 255, 255, 0.92);
-  --nav-bg: rgba(248, 245, 241, 0.7);
-  --text-main: #2f2c3a;
-  --text-muted: #6b6881;
-  --accent: #6b5bd6;
-  --accent-soft: rgba(107, 91, 214, 0.12);
-  --border-soft: rgba(47, 44, 58, 0.12);
-  --shadow-card: 0 25px 60px rgba(41, 35, 61, 0.08);
-  --shadow-card-hover: 0 35px 70px rgba(41, 35, 61, 0.15);
+  --nav-bg: rgba(240, 244, 250, 0.7);  /* 导航半透明 */
+  --text-main: #1a2c4b;         /* 主文字，深蓝 */
+  --text-muted: #6b7a9d;        /* 辅助文字，灰蓝 */
+  --accent: #3b82f6;            /* 强调色，亮蓝 */
+  --accent-soft: rgba(59, 130, 246, 0.12); /* 强调色柔和 */
+  --border-soft: rgba(26, 44, 75, 0.12);  /* 边框柔和 */
+  --shadow-card: 0 25px 60px rgba(41, 61, 90, 0.08);       /* 卡片阴影 */
+  --shadow-card-hover: 0 35px 70px rgba(41, 61, 90, 0.15); /* 悬浮阴影 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg-page: #0f1117;
-    --bg-card: #161823;
-    --bg-card-tint: rgba(22, 24, 35, 0.85);
-    --nav-bg: rgba(15, 17, 23);
-    --text-main: #f5f6fb;
-    --text-muted: #b0b4c7;
-    --accent: #a796ff;
-    --accent-soft: rgba(167, 150, 255, 0.2);
-    --border-soft: rgba(255, 255, 255, 0.14);
+
+    --bg-page: #0f121b;          /* 页面深色背景 */
+    --bg-card: #161b27;          /* 卡片背景 */
+    --bg-card-tint: rgba(22, 27, 39, 0.85);
+    --nav-bg: rgba(15, 18, 27, 0.8); /* 导航背景 */
+    --text-main: #e3eaf7;        /* 主文字，亮蓝 */
+    --text-muted: #9aa5c7;       /* 辅助文字 */
+    --accent: #60a5fa;           /* 强调色亮蓝 */
+    --accent-soft: rgba(96, 165, 250, 0.2); 
+    --border-soft: rgba(227, 234, 247, 0.14);
     --shadow-card: 0 25px 60px rgba(0, 0, 0, 0.65);
     --shadow-card-hover: 0 35px 70px rgba(0, 0, 0, 0.75);
   }
 }
+
 
 * {
   box-sizing: border-box;
