@@ -1,8 +1,9 @@
-name: Deploy Svelte 5 + Vite to GitHub Pages
+name: Deploy Svelte + Vite to GitHub Pages
 
+# 触发条件：推送到 main 或手动触发
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  # 若默认分支是 master，改为 [ master ]
   workflow_dispatch:
 
 permissions:
@@ -15,13 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout repository
+      # 1️⃣ 拉取代码
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 2️⃣ 配置 Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,17 +33,27 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
-      - name: Install dependencies & Build
+      # 3️⃣ 安装依赖并构建
+      - name: Install dependencies & build
         run: |
           npm ci
-          npm run check || echo "TypeScript check skipped/fail-safe"
-          npm run build
+          npm run check      # 可选类型检查
+          npm run build      # 生成 dist
 
-      - name: Prepare SPA fallback
+      # 4️⃣ 验证 dist 内容
+      - name: Verify dist
         run: |
-          cd dist
-          cp index.html 404.html
+          echo "Dist folder contents:"
+          ls -R dist
+          echo "Dist size: $(du -sh dist | awk '{print $1}')"
 
+      # 5️⃣ 配置 SPA fallback (index.html → 404.html)
+      - name: SPA fallback
+        run: |
+          cp dist/index.html dist/404.html
+          echo "SPA fallback ready"
+
+      # 6️⃣ 部署到 GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
@@ -47,7 +61,8 @@ jobs:
           folder: dist
           clean: true
 
-      - name: Output result
+      # 7️⃣ 输出部署信息
+      - name: Deployment Info
         run: |
-          echo "Deployed! 🌐 URL: ${{ steps.deployment.outputs.page_url }}"
-  
+          echo "✅ Deployment complete!"
+          echo "🌐 URL: ${{ steps.deployment.outputs.page_url }}"
